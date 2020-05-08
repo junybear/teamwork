@@ -252,30 +252,30 @@
             </div>
             <div class="row property-filter">
             
-             <c:forEach items="${saleBoard}" var="slist" begin="0" end="5">
+             <c:forEach items="${sales}" var="sale">
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="/img/property/property-1.jpg">
-                            <div class="label">${ slist.list }</div>
+                        <div class="pi-pic set-bg" data-setbg="/upload-images/${ sale.imageList[0].thumbImage }">
+                            <div class="label">${ sale.list }</div>
                         </div>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
-                            <div class="pt-price">${ slist.price }원</div>
-                            <h5><a href="detail?no=${ slist.no }">${ slist.stitle }</a></h5>
-                            <p><span class="icon_pin_alt"></span>${ slist.address }</p>
+                            <div class="pt-price">${ sale.price }원</div>
+                            <h5><a href="/sale/detail?no=${ sale.no }">${ sale.stitle }</a></h5>
+                            <p><span class="icon_pin_alt"></span>${ sale.address }</p>
                             <ul>
-                                <li><i class="fa fa-bathtub"></i>${ slist.bathroom }</li>
-                                <li><i class="fa fa-bed"></i>${ slist.bedroom }</li>
-                                <li><i class="fa fa-automobile"></i>${ slist.parking }</li>
+                                <li><i class="fa fa-bathtub"></i>${ sale.bathroom }</li>
+                                <li><i class="fa fa-bed"></i>${ sale.bedroom }</li>
+                                <li><i class="fa fa-automobile"></i>${ sale.parking }</li>
                             </ul>
                             <div class="pi-agent">
                                 <div class="pa-item">
                                     <div class="pa-info">
                                         <img src="/img/property/posted-by/pb-1.jpg" alt="">
-                                        <h6>${ slist.swriter }</h6>
+                                        <h6>${ sale.swriter }</h6>
                                     </div>
                                     <div class="pa-text">
-                                        	${ slist.sphone }
+                                        	${ sale.sphone }
                                     </div>
                                 </div>
                             </div>

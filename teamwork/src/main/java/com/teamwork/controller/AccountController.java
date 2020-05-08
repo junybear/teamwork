@@ -79,6 +79,7 @@ public class AccountController {
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("loginuser");
+		session.removeAttribute("logionbroker");
 		return "redirect:/";
 	}
 

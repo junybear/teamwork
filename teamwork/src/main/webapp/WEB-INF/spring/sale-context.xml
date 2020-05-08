@@ -5,12 +5,11 @@
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="saleService"
-		      class="com.teamwork.service.SaleServiceImpl">
-		      
-		      <property name="saleMapper" ref="saleMapper" />
-		  </bean>
-	
+	<bean id="saleService" class="com.teamwork.service.SaleServiceImpl">
+
+		<property name="saleMapper" ref="saleMapper" />
+	</bean>
+
 </beans>
 
 

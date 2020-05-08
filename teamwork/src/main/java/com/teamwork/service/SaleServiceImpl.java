@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.teamwork.mapper.SaleMapper;
+import com.teamwork.vo.SaleImageVO;
 import com.teamwork.vo.SaleVO;
 
 import lombok.Setter;
@@ -24,7 +25,15 @@ public class SaleServiceImpl implements SaleService {
 	public int writeSale(SaleVO sale) {
 		
 		saleMapper.insertSale(sale);
+		if (sale.getImageList() != null) {
+			for (SaleImageVO image: sale.getImageList()) {
+				
+				saleMapper.insertImages(image);
+				System.out.println(image);
+			}
+		}
 		return sale.getNo();
+		
 	}
 
 	@Override
@@ -51,9 +60,14 @@ public class SaleServiceImpl implements SaleService {
 		saleMapper.deleteSale(no);
 		
 	}
-	
-	
-	
 
+	@Override
+	public List<SaleVO> findTop6Sales() {
+		return saleMapper.selectTop6Sales();
+	}
+
+		
+
+	
 
 }

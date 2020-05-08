@@ -41,15 +41,18 @@
             <c:forEach items="${saleBoard}" var="slist">
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
-                        <div class="pi-pic set-bg" data-setbg="/img/property/property-1.jpg">
-                            <div class="label">${ slist.list }</div>
-                        </div>
+	                        <div class="pi-pic set-bg" data-setbg="/upload-images/${ slist.imageList[0].thumbImage }">
+	                            <div class="label">${ slist.list }</div>
+	                        </div>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                             <div class="pt-price">${ slist.price }원</div>
                             <h5><a href="detail?no=${ slist.no }&pageNo=${ pager.pageNo }">${ slist.stitle }</a></h5>
                             <p><span class="icon_pin_alt"></span>${ slist.address }</p>
                             <ul>
+                            	<li><i class="fa fa-object-group"></i><fmt:formatDate value="${ slist.bdate }"
+											pattern="yyyy년 MM월 dd일" /></li>
+											<br>
                                 <li><i class="fa fa-bathtub"></i>${ slist.bathroom }</li>
                                 <li><i class="fa fa-bed"></i>${ slist.bedroom }</li>
                                 <li><i class="fa fa-automobile"></i>${ slist.parking }</li>
@@ -70,11 +73,27 @@
                 </div>
               </c:forEach>
               
-              
+                  <div class="blog-pagination property-pagination ">
+                       
+                       <ul>
+                       	<div class="icon">
+                      		 		<li>${ pager }</li>
+                      		 </div>
+                       </ul>
+                   </div>
              
                 <div class="col-lg-12">
                     <div class="loadmore-btn">
-                        <a href="/sale/write">글쓰기</a>
+                    <c:choose>
+            <c:when test="${ not empty logionbroker }">
+            <a href="/sale/write">글쓰기</a>
+            </c:when>
+            <c:otherwise>
+           
+           
+            </c:otherwise>
+            </c:choose>
+        
                     </div>
                 </div>
                 <!-- 페이저 처리 하기 -->
@@ -103,6 +122,9 @@
     <script type="text/javascript">
 		$(function(){
 			var newBno = '${ newBno }';
+
+
+		
 		});
 		
     </script>

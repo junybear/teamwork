@@ -26,15 +26,15 @@ public class HomeController {
 	
 	@Autowired
 	//@Qualifier("homeService")
-	private HomeService homeService;
+	private SaleService saleService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		List<SaleVO> sales = homeService.findBoard();
+		List<SaleVO> sales = saleService.findTop6Sales();
 		
-		model.addAttribute("saleBoard", sales);
+		model.addAttribute("sales", sales);
 		
 		return "home";
 	}

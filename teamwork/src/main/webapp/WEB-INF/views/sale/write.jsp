@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-lg-10">
                     <div class="property-submit-form">
-                        <form action="write" method="post">
+                        <form action="write" method="post" enctype="multipart/form-data"> <!-- enctype = 파일업로드 -->
                         <div class="pf-title">
                         <h4>매물 유형</h4>
                         <table id="option-table">
@@ -108,10 +108,11 @@
                                 
                             </div>
                             
-                            <div class="pf-feature-image">
+                            <div class="x">
                                 <h4>사진올리기</h4>
-                                <div class="feature-image-content"></div>
+                                	<input type="file" id="images" name="images" multiple>
                             </div>
+                            	<div class="select_img"> <img src="" /></div>
                             
                             <button type="submit" class="site-btn">등록</button>
                             <input type="hidden" name="mno" value="${ loginuser.mno }">
@@ -147,7 +148,21 @@
 			$('#option-table td').css("padding-left", "20px");
 			$('#option-table th').css("padding-left", "40px");
 			$('#option-table th:first').css("padding-left", "0px");
-		})
+			
+
+			$("#images").change(function(){
+			   if(this.files && this.files[0]) {
+			    var reader = new FileReader;
+			    reader.onload = function(data) {
+			     $(".select_img img").attr("src", data.target.result).width(300);        
+			    }
+			    reader.readAsDataURL(this.files[0]);
+			   }
+			  });
+			<%=request.getRealPath("/") %>
+
+			
+		});
     </script>
 </body>
 

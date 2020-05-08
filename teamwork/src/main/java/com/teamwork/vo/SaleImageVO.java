@@ -7,9 +7,11 @@ import lombok.Data;
 @Data
 public class SaleImageVO {
 	
-	private  int ino;
+	private int ino;
 	private String originalName;
-	private String saveName;
+	private String savedName;
+	private String thumbImage;
 	private int no;
+	
 
 }

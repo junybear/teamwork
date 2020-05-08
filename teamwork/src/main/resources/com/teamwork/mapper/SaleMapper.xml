@@ -8,11 +8,27 @@
 
 
 
-	<select id="selectSale" resultType="com.teamwork.vo.SaleVO">
+	<!-- <select id="selectSale" resultType="com.teamwork.vo.SaleVO">
 		SELECT no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone, deleted
 		FROM sale
 		ORDER BY no DESC
-	</select>
+	</select> -->
+	
+	<!-- <select id="selectSaleImage" resultType="com.teamwork.vo.SaleImageVO">
+		SELECT ino, originalName, savedName, no, thumbImage
+		FROM saleimage
+		ORDER BY no DESC
+	</select> -->
+	
+	<!-- <select id="selectSale" resultMap="salemap" resultType="com.teamwork.vo.SaleVO">
+		SELECT
+			s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone, s.deleted,
+			si.ino, si.originalName, si.savedName, si.no, si.thumbImage
+		FROM sale s
+		INNER JOIN saleimage si
+		ON 1=1 
+		AND s.no = si.no
+	</select> -->
 	
 	<insert id="insertSale" parameterType="SaleVO">
 			<selectKey keyProperty="no" resultType="int" order="AFTER">
@@ -21,27 +37,111 @@
 			INSERT INTO sale (no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone)
 			VALUES (seq_sale.nextval, sysdate, #{ price }, #{ list }, #{ mno }, #{ stitle }, 
 					#{ scontent }, #{ bathroom }, #{ parking }, #{ bedroom }, #{ address }, #{ swriter }, #{ sphone })
-		</insert>
+	</insert>
+	
+	<insert id="insertImages" parameterType="SaleImageVO">
+		<selectKey keyProperty="ino" resultType="int" order="AFTER">
+			SELECT seq_saleimage.currval FROM DUAL
+		</selectKey>
+			INSERT INTO saleimage (ino, originalName, savedName, no, thumbImage)
+			VALUES (seq_saleimage.nextval, #{ originalName }, #{ savedName }, seq_sale.currval, #{ thumbImage })
+	</insert>
 		
-	<select id="selectSaleWithPaging" 
-			resultType="SaleVO" parameterType="hashmap">
 		
-		SELECT no, bdate, price, mno, deleted, stitle, scontent, list,
-			   bathroom, parking, bedroom, address, swriter, sphone
+	
+		<!-- <select id="selectImageNo" parameterType="String" resultMap="saleImageMap">
+			SELECT s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone
+				   i.ino, i.originalName, i.savedName, i.no, i.thumbImage
+		      FROM saleimage i
+			  JOIN sale s
+			    ON i.ino = s.no
+			 WHERE i.no = #{no}
+		</select> -->
+
+
+	<resultMap type="SaleVO" id="salemap">
+		<id column="no" property="no" />
+		<result column="no" property="no" />
+		<result column="bdate" property="bdate" />
+		<result column="price" property="price" />
+		<result column="mno" property="mno" />
+		<result column="deleted" property="deleted" />
+		<result column="stitle" property="stitle" />
+		<result column="scontent" property="scontent" />
+		<result column="list" property="list" />
+		<result column="bathroom" property="bathroom" />
+		<result column="parking" property="parking" />
+		<result column="bedroom" property="bedroom" />
+		<result column="address" property="address" />
+		<result column="swriter" property="swriter" />
+		<result column="sphone" property="sphone" />
+		<collection property="imageList" column="no" select="selectSaleImageBySaleNo" />
+	</resultMap>
+	<resultMap type="SaleImageVO" id="saleImageMap">
+		<id column="ino" property="ino" />
+		<result column="no" property="no" />
+		<result column="originalName" property="originalName" />
+		<result column="savedName" property="savedName" />
+		<result column="thumbImage" property="thumbImage" />
+	</resultMap>
+	
+	<select id="selectSale" resultMap="salemap">
+		SELECT
+			s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone, s.deleted,
+			si.ino, si.originalName, si.savedName, si.no, si.thumbImage
+		FROM sale s
+		INNER JOIN saleimage si
+		ON 1=1 
+		AND s.no = si.no
+	</select>
+	
+	<select id="selectSaleWithPaging" resultMap="salemap" parameterType="hashmap">
+		SELECT no, bdate, price, mno, deleted, stitle, scontent, list, bathroom, parking, bedroom, address, swriter, sphone
 		FROM
 		(
-		    SELECT rownum idx, no, bdate, price, mno, deleted, stitle, scontent, list,
-			   bathroom, parking, bedroom, address, swriter, sphone
-		    FROM sale
+		    SELECT
+				rownum idx, s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone, s.deleted
+			FROM sale s
+			
 		    WHERE    
 		    	deleted = '0'
 		    	AND <![CDATA[ rownum < #{ end } ]]>
 		    ORDER BY no DESC
 		)
 		WHERE idx >= #{ beginning }
-		
 	</select>
 	
+	<select id="selectSaleImageBySaleNo" resultMap="saleImageMap" parameterType="int">
+		SELECT ino, originalName, no, savedName, thumbImage
+		FROM saleimage 
+		WHERE no = #{ no }
+	</select>
+	
+	
+	
+	<!-- 
+	<select id="selectSaleWithPagingx" resultMap="salemap" parameterType="hashmap">
+		SELECT no, bdate, price, mno, deleted, stitle, scontent, list,
+			   bathroom, parking, bedroom, address, swriter, sphone,
+			   ino,originalName, savedName, no, thumbImage
+		FROM
+		(
+		    SELECT
+				rownum idx, s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone, s.deleted,
+				si.ino, si.originalName, si.savedName, si.thumbImage
+			FROM sale s
+			LEFT OUTER JOIN saleimage si
+			ON s.no = si.no
+			
+		    WHERE    
+		    	deleted = '0'
+		    	AND <![CDATA[ rownum < #{ end } ]]>
+		    ORDER BY no DESC
+		)
+		WHERE idx >= #{ beginning }
+	</select>
+	 -->
+	 
 	<select id="selectSaleCount" parameterType="hashmap" resultType="int">
 		SELECT COUNT(*) 
 		FROM sale 
@@ -49,11 +149,17 @@
 			deleted = '0'
 	</select>
 	
-	<select id="selectSaleByNo" parameterType="int" resultType="SaleVO">
+	<!-- <select id="selectSaleByNo" parameterType="int" resultType="SaleVO">
 		SELECT no, bdate, price, deleted, stitle, scontent, list,
 			   bathroom, parking, bedroom, address, swriter, sphone
 		FROM sale
 		WHERE no = #{ no } AND deleted = '0'
+	</select> -->
+	
+	<select id="selectSaleByNo" parameterType="int" resultMap="salemap">
+		SELECT  s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone, s.deleted
+		FROM sale s 
+		WHERE s.no = #{ no } AND deleted = '0'
 	</select>
 	
 	<update id="deleteSale" parameterType="int">
@@ -61,5 +167,17 @@
 		SET deleted = '1' 
 		WHERE no = #{ no }
 	</update>
+	
+	<select id="selectTop6Sales" resultMap="salemap">
+		<![CDATA[
+		SELECT * FROM
+		(
+			SELECT no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone, deleted
+			FROM sale
+			ORDER BY no DESC
+		) t
+		WHERE rownum < 7
+		]]>
+	</select>
 	
 </mapper>

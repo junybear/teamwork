@@ -9,9 +9,15 @@
 
 
 	<select id="selectSale" resultType="SaleVO">
-		SELECT no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone, deleted
-		FROM sale
-		ORDER BY no DESC
+		<![CDATA[
+		SELECT * FROM
+		(
+			SELECT no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone, deleted
+			FROM sale
+			ORDER BY no DESC
+		) t
+		WHERE rownum < 7
+		]]>
 	</select>
 	
 	
