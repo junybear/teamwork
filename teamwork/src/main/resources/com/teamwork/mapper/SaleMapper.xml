@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamwork.mapper.SaleMapper">
+
+
+
+	<select id="selectSale" resultType="com.teamwork.vo.SaleVO">
+		SELECT no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone, deleted
+		FROM sale
+		ORDER BY no DESC
+	</select>
+	
+	<insert id="insertSale" parameterType="SaleVO">
+			<selectKey keyProperty="no" resultType="int" order="AFTER">
+				SELECT seq_sale.currval FROM DUAL
+			</selectKey>
+			INSERT INTO sale (no, bdate, price, list, mno, stitle, scontent, bathroom, parking, bedroom, address, swriter, sphone)
+			VALUES (seq_sale.nextval, sysdate, #{ price }, #{ list }, #{ mno }, #{ stitle }, 
+					#{ scontent }, #{ bathroom }, #{ parking }, #{ bedroom }, #{ address }, #{ swriter }, #{ sphone })
+		</insert>
+		
+	<select id="selectSaleWithPaging" 
+			resultType="SaleVO" parameterType="hashmap">
+		
+		SELECT no, bdate, price, mno, deleted, stitle, scontent, list,
+			   bathroom, parking, bedroom, address, swriter, sphone
+		FROM
+		(
+		    SELECT rownum idx, no, bdate, price, mno, deleted, stitle, scontent, list,
+			   bathroom, parking, bedroom, address, swriter, sphone
+		    FROM sale
+		    WHERE    
+		    	deleted = '0'
+		    	AND <![CDATA[ rownum < #{ end } ]]>
+		    ORDER BY no DESC
+		)
+		WHERE idx >= #{ beginning }
+		
+	</select>
+	
+	<select id="selectSaleCount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) 
+		FROM sale 
+		WHERE 
+			deleted = '0'
+	</select>
+	
+	<select id="selectSaleByNo" parameterType="int" resultType="SaleVO">
+		SELECT no, bdate, price, deleted, stitle, scontent, list,
+			   bathroom, parking, bedroom, address, swriter, sphone
+		FROM sale
+		WHERE no = #{ no } AND deleted = '0'
+	</select>
+	
+	<update id="deleteSale" parameterType="int">
+		UPDATE sale
+		SET deleted = '1' 
+		WHERE no = #{ no }
+	</update>
+	
+</mapper>

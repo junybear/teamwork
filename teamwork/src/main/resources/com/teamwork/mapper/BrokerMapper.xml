@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	       
+	 <mapper namespace="com.teamwork.mapper.BrokerMapper">
+	
+	
+	<insert id="insertMember" parameterType="MemberVO">
+      INSERT INTO member (mno, mid, password, email, birthday, gender, phone, authority)
+      VALUES (seq_member.nextval, #{ mid }, #{ password }, #{ email }, #{ birthday }, #{ gender }, #{ phone }, 'b')
+   </insert>  
+	 <insert id="insertBroker" parameterType="BrokerVO">
+	 INSERT INTO broker (no, mno, corporate, corporate_name, corporate_address, corporate_ceo)
+	 VALUES  (seq_broker.nextval, seq_member.CURRVAL, #{ corporate }, #{ corporateName }, #{ corporateAddress }, #{ corporateCeo })
+	 </insert>
+	 
+	 <update id="updateUser" parameterType="MemberVO">
+	 update member
+	 set password = #{password}, phone = #{phone}
+	 where mno = #{mno}
+	 </update>
+	 <update id="updatebroker" parameterType="BrokerVO">
+	 update broker
+	 set corporate_name = #{corporateName}, corporate_address = #{corporateAddress}
+	 where mno = #{mno}
+	 </update>
+	 </mapper>

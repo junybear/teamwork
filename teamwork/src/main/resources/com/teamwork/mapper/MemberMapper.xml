@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	       
+	 <mapper namespace="com.teamwork.mapper.MemberMapper">
+	
+	 <insert id="insertMember" parameterType="MemberVO">
+      INSERT INTO member (mno, mid, password, email, birthday, gender, phone, authority)
+      VALUES (seq_member.nextval, #{ mid }, #{ password }, #{ email }, #{ birthday }, #{ gender }, #{ phone }, 'u')
+   </insert>   
+	 
+	 <select id="selectMember" parameterType="MemberVO" resultType="MemberVO">
+	 	SELECT mno, mid, password, email, birthday, gender, phone, authority
+	 		 
+	 	FROM member 
+	 	
+	    
+	 	WHERE mid= #{ mid } AND password = #{ password }
+	 </select>
+	 
+	 <select id="idcheck" parameterType="String" resultType="Integer">
+	 	SELECT COUNT(*) FROM member
+	 	WHERE mid = #{ mid }
+	 </select>
+	 <select id="emailck" parameterType="String" resultType="Integer">
+	 	SELECT COUNT(*) FROM member
+	 	WHERE email = #{ email }
+	 </select>
+	 
+	 <resultMap type="BrokerVO" id="brokerMap">
+		<id column="no" property="no" />
+		<result column="mno" property="mno" />
+		<result column="corporate" property="corporate" />
+		<result column="corporate_name" property="corporateName" />
+		<result column="corporate_address" property="corporateAddress" />
+		<result column="corporate_ceo" property="corporateCeo" />
+	</resultMap>
+	 
+	 <select id="brokerFind" parameterType="MemberVO" resultType="MemberVO">
+	 	SELECT m.mno, m.mid, m.password, m.email, m.birthday, m.gender, m.phone, m.authority,
+	 		 b.no, b.mno, b.corporate, b.corporate_name corporateName, b.corporate_address corporateAddress, b.corporate_ceo corporateCeo
+	 	FROM member m
+	 	INNER JOIN broker b
+	    ON m.mno = b.mno
+	 	WHERE mid= #{ mid } AND password = #{ password }
+	 </select>
+	 
+	 <select id="findId" parameterType="MemberVO" resultType="MemberVO">
+	 	select mid
+	 	from member
+	 	where email = #{email} AND phone = #{phone}
+	 </select>
+	 
+	 <update id="getUserPass" parameterType="memberVO">
+     update member 
+     set password = #{password}
+     where mid = #{mid} and email = #{email} 
+     
+    </update>
+    
+    <select id="getUserEmail" resultType="memberVO">
+    select * 
+    from member 
+    where email = #{email}
+    </select>
+    
+    <update id="updateMember" parameterType="memberVO">
+     update member 
+    set password = #{password} , phone = #{phone}
+    where mid = #{mid}
+    </update>
+	 
+	 </mapper>

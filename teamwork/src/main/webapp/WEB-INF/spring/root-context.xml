@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:env.properties" />
+	</bean>
+	
+	<bean id="apacheDataSource"
+		  class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="${datasource.driver}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+		<property name="minIdle" value="${datasource.minidle}" />
+		<property name="maxTotal" value="${datasource.maxpool}" />
+		<property name="maxWaitMillis" value="${datasource.conntimeout}" />
+	</bean>
+	
+	<bean id="hikariDataSource"
+		  class="com.zaxxer.hikari.HikariDataSource">
+		<property name="driverClassName" value="${datasource.driver}" />
+		<property name="jdbcUrl" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+		<property name="minimumIdle" value="${datasource.minidle}" />
+		<property name="maximumPoolSize" value="${datasource.maxpool}" />
+		<property name="connectionTimeout" value="${datasource.conntimeout}" />
+	</bean>	
+		
+		
+	<bean id="sqlSessionFactory"
+		  class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="apacheDataSource" />
+		<property name="configLocation" 
+				  value="classpath:mybatis-config.xml" />
+	</bean>	
+	<bean id="sessionTemplate"
+		  class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />	  
+	</bean>
+	
+	<bean id="HomeService"
+		      class="com.teamwork.service.HomeServiceImpl">
+		      
+		      <property name="homeMapper" ref="homeMapper" />
+		  </bean>
+	
+	<import resource="notice-context.xml" />
+	<import resource="sale-context.xml" />
+	<import resource="member-context.xml" />
+	<import resource="broker-context.xml" />
+	
+	
+	
+		
+		
+		<mybatis-spring:scan base-package="com.teamwork.mapper" />
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

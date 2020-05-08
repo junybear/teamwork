@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="memberService"
+		      class="com.teamwork.service.MemberServiceImpl">
+		      
+		      <property name="memberMapper" ref="memberMapper" />
+		  </bean>
+		  
+		  <bean id="javaMailSender"
+        class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="aajj6540@gmail.com" />
+        <property name="password" value="z1x2c3z1x2c3" />
+        <property name="javaMailProperties"  >
+           <props>
+              <prop key="mail.smtp.ss.trust">smtp.gmail.com</prop>
+              <prop key="mail.smtp.starttls.enable">true</prop>
+              <prop key="mail.smtp.auth">true</prop>
+           </props>
+           </property>
+        </bean>
+	
+</beans>
+
+
+

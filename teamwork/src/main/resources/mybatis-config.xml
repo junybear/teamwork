@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases>
+
+		<typeAlias type="com.teamwork.vo.MemberVO" alias="MemberVO" /> 
+		<typeAlias type="com.teamwork.vo.NoticeVO" alias="NoticeVO" />
+		<typeAlias type="com.teamwork.vo.SaleVO" alias="SaleVO" />
+		<typeAlias type="com.teamwork.vo.BrokerVO" alias="BrokerVO" />
+
+	</typeAliases>
+	
+</configuration>

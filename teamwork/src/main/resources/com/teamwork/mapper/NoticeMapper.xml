@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamwork.mapper.NoticeMapper">
+
+
+	
+	<insert id="insertNotice" parameterType="NoticeVO">
+		<selectKey keyProperty="no" resultType="int" order="AFTER">
+			SELECT seq_notice.currval FROM DUAL
+		</selectKey>
+		INSERT INTO notice (no, mno, title,content, ndate)
+		VALUES (seq_notice.nextval, #{mno}, #{title}, #{content}, sysdate)
+	</insert>
+	
+	<select id="selectNoticeWithPaging" 
+			resultType="NoticeVO" parameterType="hashmap">
+		
+		SELECT no, mno, title, content, ndate, deleted
+		FROM
+		(
+		    SELECT rownum idx, no, mno, title, content, ndate, deleted
+		    FROM notice
+		    WHERE    
+		    	deleted = '0'
+		    	AND <![CDATA[ rownum < #{ end } ]]>
+		    ORDER BY no DESC
+		)
+		WHERE idx >= #{ beginning }
+		
+	</select>
+	
+	<!-- <select id="selectNotice" resultType="com.teamwork.vo.NoticeVO">
+		SELECT no, mno, title, content, ndate, deleted
+		FROM notice
+		ORDER BY no DESC
+	</select> -->
+	
+	<select id="selectNoticeCount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) 
+		FROM notice 
+		WHERE 
+			deleted = '0'
+	</select>
+
+	<select id="selectNoticeByNo" parameterType="int" resultType="NoticeVO">
+		SELECT no, title, content, ndate, deleted
+		FROM notice
+		WHERE no = #{ no } AND deleted = '0'
+	</select>
+	
+	<update id="deleteNotice" parameterType="int">
+		UPDATE notice
+		SET deleted = '1' 
+		WHERE no = #{ no }
+	</update>
+	
+</mapper>
