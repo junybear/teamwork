@@ -91,7 +91,7 @@
                                 
                                 <div>
                                <label >사업장 주소</label> 
-                               <input type="text" id="sample4_roadAddress"  placeholder="주소" name="corporateAddress"  class="corporateAddresscss" required>
+                               <input type="text" id="sample4_roadAddress"  placeholder="주소" name="corporateAddress"  class="corporateAddresscss" required readonly>
 							   <input type="button" onclick="sample4_execDaumPostcode()" value="주소 찾기" class="site-btn"><br>
 							   <span id="guide" style="color:#999;display:none"></span>
 

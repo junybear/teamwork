@@ -95,6 +95,19 @@
 		AND s.no = si.no
 	</select>
 	
+	<sql id="search">
+	<trim suffix="AND">
+	<choose>
+		<when test="searchType == 'T'.toString()">
+			(upper(s.address) LIKE '%'||upper(#{searchKey})||'%' )
+		</when>
+		<when test="searchType == 'S'.toString()">
+			( upper(s.list) LIKE '%'||upper(#{searchKey})||'%')
+		</when>
+	</choose>
+	</trim>
+	</sql>
+	
 	<select id="selectSaleWithPaging" resultMap="salemap" parameterType="hashmap">
 		SELECT no, bdate, price, mno, deleted, stitle, scontent, list, bathroom, parking, bedroom, address, swriter, sphone
 		FROM
@@ -103,7 +116,8 @@
 				rownum idx, s.no, s.bdate, s.price, s.list, s.mno, s.stitle, s.scontent, s.bathroom, s.parking, s.bedroom, s.address, s.swriter, s.sphone, s.deleted
 			FROM sale s
 			
-		    WHERE    
+		    WHERE  
+		    	<include refid="search" />  
 		    	deleted = '0'
 		    	AND <![CDATA[ rownum < #{ end } ]]>
 		    ORDER BY no DESC
@@ -176,7 +190,7 @@
 			FROM sale
 			ORDER BY no DESC
 		) t
-		WHERE rownum < 7
+		WHERE rownum < 7 AND deleted = '0'
 		]]>
 	</select>
 	

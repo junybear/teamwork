@@ -41,9 +41,12 @@
             <c:forEach items="${saleBoard}" var="slist">
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
+                    <a href="detail?no=${ slist.no }&pageNo=${ pager.pageNo }">
 	                        <div class="pi-pic set-bg" data-setbg="/upload-images/${ slist.imageList[0].thumbImage }">
+	                        
 	                            <div class="label">${ slist.list }</div>
 	                        </div>
+	                        </a>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                             <div class="pt-price">${ slist.price }원</div>
@@ -64,7 +67,7 @@
                                         <h6>${ slist.swriter }</h6>
                                     </div>
                                     <div class="pa-text">
-                                        	${ slist.sphone }
+                                        	연락처: ${ slist.sphone }
                                     </div>
                                 </div>
                             </div>

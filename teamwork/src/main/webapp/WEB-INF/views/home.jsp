@@ -255,9 +255,11 @@
              <c:forEach items="${sales}" var="sale">
                 <div class="col-lg-4 col-md-6">
                     <div class="property-item">
+                    <a href="/sale/detail?no=${ sale.no }">
                         <div class="pi-pic set-bg" data-setbg="/upload-images/${ sale.imageList[0].thumbImage }">
                             <div class="label">${ sale.list }</div>
                         </div>
+                        </a>
                         <div class="pi-text">
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                             <div class="pt-price">${ sale.price }원</div>
@@ -275,7 +277,7 @@
                                         <h6>${ sale.swriter }</h6>
                                     </div>
                                     <div class="pa-text">
-                                        	${ sale.sphone }
+                                        	연락처: ${ sale.sphone }
                                     </div>
                                 </div>
                             </div>

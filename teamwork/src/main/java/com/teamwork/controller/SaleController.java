@@ -60,7 +60,11 @@ public class SaleController {
 	}
 
 	@GetMapping(path = { "/list" })
-	public String showListForm(@RequestParam(defaultValue = "1") int pageNo, HttpServletRequest req, Model model) { // 리스트
+	public String showListForm(@RequestParam(defaultValue = "1") int pageNo,
+							   @RequestParam(required = false) String searchType,
+							   @RequestParam(required = false) String searchKey,
+								HttpServletRequest req, Model model
+								) { // 리스트
 																													// 화면
 																													// 보기
 
@@ -70,6 +74,8 @@ public class SaleController {
 		int beginning = (pageNo - 1) * pageSize + 1;
 		params.put("beginning", beginning);
 		params.put("end", beginning + pageSize);
+		params.put("searchType", searchType);
+		params.put("searchKey", searchKey);
 
 		List<SaleVO> sales = saleService.findNoticeWithPaging(params);
 

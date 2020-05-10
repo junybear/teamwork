@@ -48,7 +48,10 @@
                 <img src="/img/logo.png" alt="">
             </a>
         </div>
-        <div id="mobile-menu-wrap"></div>
+        <div id="mobile-menu-wrap">
+        
+        
+        </div>
         <div class="om-widget">
              <c:choose>
             <c:when test="${loginuser.authority eq 'u' }">
@@ -92,6 +95,17 @@
                         <div class="logo">
                             <a href="/"><img src="/img/logo.png" alt=""></a>
                         </div>
+                        <form action="/sale/list" method="get">
+        <select style="display: none;" name="searchType" aria-controls="dataTable" id="formid">
+        	<option value="T" ${ param.searchType =='T' ? 'selected' : '' }>주소로 검색</option>
+        	<option value="S" ${ param.searchType =='S' ? 'selected' : '' }>매물 종류</option>
+        </select>
+        <span>
+        <input id="id" type="search" name="searchKey" placeholder="" aria-controls="dataTable"
+             value="${ param.searchKey }">
+        </span>
+        <input type="hidden" value="검색">
+        </form>
                     </div>
                     <div class="col-lg-10">
                         <div class="ht-widget">
@@ -168,11 +182,7 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="hn-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                          
                         </div>
                     </div>
                 </div>
